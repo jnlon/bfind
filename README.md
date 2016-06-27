@@ -8,24 +8,24 @@ something like:
 
 `find ~ | grep myfile`
 
-If your `~` has heavily nested directories, then it may take a while for `find`
+If your $HOME has heavily nested directories, then it could take a while for `find`
 to print what your grepping for. 
 
 With `bfind`, the shallower your file is in the directory tree, the faster it
 will be printed. This is ideal for the above use case.
 
-# Usage
+## Usage
 
 `bfind [path1] [path2]...`
 
 `bfind` does not implement any options (pull requests welcome)
 
-# Building
+## Building
 
 Run `make` in the project's directory. Make sure you have ocaml installed, and
 that `ocamlopt` is in your $PATH.
 
-# Output Comparison
+## Output Comparison
 
 Suppose you have the following directory structure:
 
@@ -78,5 +78,5 @@ And the output of `bfind .` is:
 ./a/d/e/f/file4.txt
 ```
 
-Notice that the files deepest into the directory structure (file4 and file5)
-are printed last.
+Notice that files deepest into the filesystem (file4 and file5) are printed
+last.
