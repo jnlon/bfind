@@ -32,16 +32,18 @@ Suppose you have the following directory structure:
 ```
 .
 ├── a
-│   ├── d
-│   │   └── e
-│   │       ├── f
-│   │       │   └── file5.txt
-│   │       └── file4.txt
-│   └── file1.txt
+│   └── d
+│       └── e
+│           └── f
+│               ├── file4.txt
+│               └── file5.txt
 ├── b
 │   └── file2.txt
-└── c
-    └── file3.txt
+├── c
+│   └── file3.txt
+│
+└── file1.txt
+
 ```
 
 Assuming you have GNU find installed, running `find .` results in:
