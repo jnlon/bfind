@@ -46,7 +46,7 @@ Suppose you have the following directory structure:
 
 ```
 
-Assuming you have GNU find installed, running `find .` results in:
+Assuming you have GNU find installed, running `find .` results in something like:
 
 ```
 .
