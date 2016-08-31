@@ -1,10 +1,10 @@
-open Unix
-open Filename
-open Printf
+module U = Unix ;;
+module F = Filename ;;
+module P = Printf ;;
 
 (* Read file entries from dirhandle, but remove '.' and '..' *)
 let rec readdir_no_dot dirhandle = 
-  let entry = readdir dirhandle in
+  let entry = U.readdir dirhandle in
   match entry with 
       "." -> readdir_no_dot dirhandle
     | ".." -> readdir_no_dot dirhandle
@@ -13,20 +13,21 @@ let rec readdir_no_dot dirhandle =
 
 (* Remove suffix suf from end of string *)
 let chop_suffix str suff = 
-  if ((String.length str) != 1 && (check_suffix str suff))
-  then Filename.chop_suffix str suff
+  if ((String.length str) != 1 && (F.check_suffix str suff))
+  then F.chop_suffix str suff
   else str
 ;;
 
 (* Ask if file at path is of type Unix.file_kind *)
-let is_file_type (path : string) (kind : file_kind) = 
+let is_file_type (path : string) (kind : U.file_kind) = 
+  let open Unix in
   try
-    Unix.access path [R_OK;F_OK]; 
-    (Unix.stat path).st_kind = kind 
+    U.access path [U.R_OK;U.F_OK]; 
+    (U.stat path).st_kind = kind 
   with _ -> false
 ;;
 
-let is_directory path = is_file_type path S_DIR;;
+let is_directory path = is_file_type path U.S_DIR;;
 
 let show_help () = 
   prerr_endline "Usage: bfind [file]..."
@@ -48,12 +49,12 @@ let list_dir_entries dirhandle =
 let rec bfind (path : string) (depth: int) : bool =
   try
     let open List in
-    let dirhandle = opendir path in
+    let dirhandle = U.opendir path in
     let entries_here = (list_dir_entries dirhandle) in
     let paths = map (Filename.concat path) entries_here in
     let directories = filter is_directory paths in
 
-    closedir dirhandle;
+    U.closedir dirhandle;
 
     (* We've reached our target depth level *)
     if depth = 0 then begin
@@ -70,7 +71,7 @@ let rec bfind (path : string) (depth: int) : bool =
         find (fun p -> p = true) dig_results 
       with Not_found -> false; 
     end
-  with Unix_error (e,func,arg) -> false; (* Error opening a directory *)
+  with U.Unix_error (e,func,arg) -> false; (* Error opening a directory *)
 ;;
 
 (* Run bfind for every valid directory path in argv *)
@@ -84,13 +85,13 @@ let rec process_argv argv =
   match argv with 
     this_arg :: rest_argv -> 
       begin try 
-          let start_path = chop_suffix this_arg dir_sep in
-          Unix.access start_path [R_OK;F_OK]; (* Does directory file exist? *)
+          let start_path = chop_suffix this_arg F.dir_sep in
+          Unix.access start_path [U.R_OK;U.F_OK]; (* Does directory file exist? *)
           print_endline start_path;
           find_at_depth start_path 0;
           process_argv rest_argv
-        with Unix_error (e,func,arg) -> 
-          fprintf Pervasives.stderr "'%s' on '%s': %s \n" func arg (error_message e);
+        with U.Unix_error (e,func,arg) -> 
+          P.fprintf stderr "'%s' on '%s': %s \n" func arg (U.error_message e);
           show_help ();
           process_argv rest_argv 
       end
