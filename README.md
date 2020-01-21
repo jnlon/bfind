@@ -1,29 +1,24 @@
 # bfind
 
-`bfind` is similar to the Unix `find(1)` command, but unlike GNU find, it searches for files
-breadth first instead of depth first.
-
-A breadth first search is useful if you are looking for a nearby file with
-something like:
+`bfind` is similar to the Unix `find(1)` command except it searches breadth
+first instead of depth first. A breadth first search is useful if you are
+searching for a file with something like:
 
 `find ~ | grep myfile`
 
-If your $HOME has heavily nested directories, then it could take a while for `find`
-to print what your grepping for. 
+If your $HOME has heavily nested directories the above command could take some
+time to print any output. Using `bfind` in this example, the shallower your
+file is in the directory tree the faster it will be printed.
 
-With `bfind`, the shallower your file is in the directory tree, the faster it
-will be printed. This is ideal for the above use case.
+## Dependencies
+
+- [LuaFileSystem](https://keplerproject.github.io/luafilesystem/),
 
 ## Usage
 
-`bfind [path1] [path2]...`
+`bfind.lua [path]`
 
-`bfind` does not implement any options (pull requests welcome)
-
-## Building
-
-Run `make` in the project's directory. Make sure you have ocaml installed, and
-that `ocamlopt` is in your $PATH.
+`bfind.lua` does not implement any options (pull requests welcome)
 
 ## Output Comparison
 
@@ -63,7 +58,7 @@ Assuming you have GNU find installed, running `find .` results in something like
 ./c/file3.txt
 ```
 
-And the output of `bfind .` is:
+And the output of `bfind.lua .` is:
 
 ```
 .
